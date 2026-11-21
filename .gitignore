@@ -1,0 +1,14 @@
+.build/
+.build-*/
+.swiftpm-cache*/
+build/
+.swiftpm/
+.DS_Store
+*.xcuserstate
+verification/
+/evaluation/private/
+/evaluation/
+.env
+.env.*
+*.p12
+*.pfx
