@@ -1,6 +1,6 @@
 import AppKit
 import ApplicationServices
-import FilerCore
+import FilelyCore
 
 /// Coordinates use the Accessibility coordinate space: origin at the top left.
 struct PickerSession: Equatable {
@@ -31,7 +31,7 @@ enum PickerIntegrationError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .accessibilityRequired:
-            return "Allow Filer in Accessibility settings to work with Chrome’s attachment window."
+            return "Allow Filely in Accessibility settings to work with Chrome’s attachment window."
         case .pickerClosed:
             return "The attachment window changed. Open Attach in Chrome and choose the file again."
         case .fileUnavailable:
@@ -39,17 +39,17 @@ enum PickerIntegrationError: LocalizedError {
         case .navigationUnavailable:
             return "Chrome’s attachment window didn’t expose its folder field. You can still choose the file in the normal picker."
         case .navigationUnconfirmed:
-            return "Filer couldn’t confirm the folder change. Nothing was attached."
+            return "Filely couldn’t confirm the folder change. Nothing was attached."
         case .selectionUnconfirmed:
-            return "Filer couldn’t confirm the selected file. Check it in Chrome’s attachment window and press Open to finish."
+            return "Filely couldn’t confirm the selected file. Check it in Chrome’s attachment window and press Open to finish."
         case .openFailed:
             return "Chrome’s attachment window is still open. Check the selection and press Open to finish."
         case .cancelled:
-            return "Selection stopped because Filer was paused. Nothing else will be selected."
+            return "Selection stopped because Filely was paused. Nothing else will be selected."
         case .targetNotForeground:
             return "Bring Chrome’s attachment window to the front, then choose the file again."
         case .pickerUnavailable:
-            return "Filer couldn’t verify the attachment window. Reopen Attach in Chrome and try again."
+            return "Filely couldn’t verify the attachment window. Reopen Attach in Chrome and try again."
         }
     }
 }
@@ -180,7 +180,7 @@ final class PickerMonitor {
         if let front, allowedBundleIDs.contains(front.bundleIdentifier ?? "") {
             candidate = front
         } else if let front, front.bundleIdentifier == ownBundleID, let session = lastSession {
-            // Filer’s settings or preview may briefly take focus. Keep the existing
+            // Filely’s settings or preview may briefly take focus. Keep the existing
             // picker visible, but never use this exception to start reading a new app.
             candidate = NSRunningApplication(processIdentifier: session.applicationPID)
         }
@@ -240,7 +240,7 @@ private struct PageContext {
 }
 
 private final class PickerWorker: @unchecked Sendable {
-    private let queue = DispatchQueue(label: "com.filer.accessibility", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "com.filely.accessibility", qos: .userInitiated)
     private let requiresGmailContext: Bool
     private var cachedContext: PageContext?
     private var lastCapture = Date.distantPast
@@ -266,7 +266,7 @@ private final class PickerWorker: @unchecked Sendable {
     func reset() {
         // Invalidate immediately, even if the worker is inside a slow AX read.
         // Queueing cancellation behind that read could otherwise allow its next
-        // keyboard or Open action to run after the user paused Filer.
+        // keyboard or Open action to run after the user paused Filely.
         advanceOperationEpoch()
         queue.async {
             self.cachedContext = nil

@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 import CoreText
-import FilerCore
+import FilelyCore
 
 @MainActor
 final class DemoController: ObservableObject {
@@ -14,7 +14,7 @@ final class DemoController: ObservableObject {
 
     init(model: AppModel) {
         self.model = model
-        listener = NotificationCenter.default.addObserver(forName: .filerDemoSelected, object: nil, queue: .main) { [weak self] note in
+        listener = NotificationCenter.default.addObserver(forName: .filelyDemoSelected, object: nil, queue: .main) { [weak self] note in
             guard let url = note.object as? URL else { return }
             Task { @MainActor in self?.selectedName = url.lastPathComponent }
         }
@@ -37,7 +37,7 @@ final class DemoController: ObservableObject {
     func close() { model.endDemo() }
 
     private func makeSampleFiles() throws -> URL {
-        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("Filer-Sample-Files", isDirectory: true)
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("Filely-Sample-Files", isDirectory: true)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         let documents = [
             ("Alex Morgan — Resume.pdf", "ALEX MORGAN\nSoftware Engineer\n\nExperience\nSoftware engineering internship: built reliable backend services.\nProjects\nOn-device machine learning and native macOS productivity tools.\nSkills\nSwift, Python, model evaluation, product development.", 0.0),
@@ -57,7 +57,7 @@ final class DemoController: ObservableObject {
     private func writePDF(text: String, to url: URL) throws {
         var page = CGRect(x: 0, y: 0, width: 612, height: 792)
         guard let consumer = CGDataConsumer(url: url as CFURL), let context = CGContext(consumer: consumer, mediaBox: &page, nil) else {
-            throw NSError(domain: "FilerDemo", code: 1, userInfo: [NSLocalizedDescriptionKey: "PDF creation failed."])
+            throw NSError(domain: "FilelyDemo", code: 1, userInfo: [NSLocalizedDescriptionKey: "PDF creation failed."])
         }
         context.beginPDFPage(nil)
         for (index, line) in text.components(separatedBy: "\n").enumerated() {
@@ -75,7 +75,7 @@ struct DemoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             HStack(spacing: 9) {
-                Image(systemName: "envelope.open").font(.system(size: 17)).foregroundStyle(FilerStyle.accent)
+                Image(systemName: "envelope.open").font(.system(size: 17)).foregroundStyle(FilelyStyle.accent)
                 Text("A little preview").font(.system(size: 18, weight: .semibold))
                 Spacer()
                 Text("SAMPLE EMAIL").font(.system(size: 9, weight: .semibold)).tracking(0.8).foregroundStyle(.secondary)
@@ -84,7 +84,7 @@ struct DemoView: View {
             Surface {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 10) {
-                        Text("J").font(.system(size: 15, weight: .medium)).foregroundStyle(FilerStyle.accent).frame(width: 33, height: 33).background(FilerStyle.accent.opacity(0.09), in: Circle())
+                        Text("J").font(.system(size: 15, weight: .medium)).foregroundStyle(FilelyStyle.accent).frame(width: 33, height: 33).background(FilelyStyle.accent.opacity(0.09), in: Circle())
                         VStack(alignment: .leading, spacing: 3) {
                             Text("Jamie · Recruiting").font(.system(size: 12, weight: .semibold))
                             Text("To you").font(.system(size: 10)).foregroundStyle(.secondary)
@@ -97,14 +97,14 @@ struct DemoView: View {
                 }
             }
             if let name = controller.selectedName {
-                Label(name, systemImage: "checkmark.circle.fill").font(.system(size: 12, weight: .medium)).foregroundStyle(FilerStyle.accent)
+                Label(name, systemImage: "checkmark.circle.fill").font(.system(size: 12, weight: .medium)).foregroundStyle(FilelyStyle.accent)
             }
             if let error = controller.errorMessage { Text(error).font(.system(size: 11)).foregroundStyle(.red) }
             HStack {
                 Button(action: controller.showSuggestions) {
                     Label(controller.isLoading ? "Finding files…" : "Show file suggestions", systemImage: "paperclip")
                         .padding(.vertical, 4)
-                }.buttonStyle(.glassProminent).tint(FilerStyle.accent).disabled(controller.isLoading)
+                }.buttonStyle(.glassProminent).tint(FilelyStyle.accent).disabled(controller.isLoading)
                 Spacer()
                 Text("Sample files. No email is sent.").font(.system(size: 10)).foregroundStyle(.secondary)
             }

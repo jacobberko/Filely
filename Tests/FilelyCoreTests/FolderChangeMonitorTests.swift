@@ -1,11 +1,11 @@
 import Foundation
 import XCTest
-@testable import FilerCore
+@testable import FilelyCore
 
 final class FolderChangeMonitorTests: XCTestCase {
     private func makeFolder() throws -> URL {
         let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent("FilerWatcherTests-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("FilelyWatcherTests-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         // Use physical paths so expected deleted paths retain their identity.
         let resolved = try XCTUnwrap(root.path.withCString { realpath($0, nil) })

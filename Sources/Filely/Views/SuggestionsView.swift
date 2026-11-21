@@ -1,5 +1,5 @@
 import SwiftUI
-import FilerCore
+import FilelyCore
 
 struct SuggestionsView: View {
     @ObservedObject var model: AppModel
@@ -12,10 +12,10 @@ struct SuggestionsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 10) {
-                FilerMark(size: 30)
+                FilelyMark(size: 30)
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Right here").font(.system(size: 16, weight: .semibold)).tracking(-0.3)
-                    Text(model.isDemo ? "Filer · Sample email" : "Filer · Gmail in Chrome").font(.system(size: 10)).foregroundStyle(.secondary)
+                    Text(model.isDemo ? "Filely · Sample email" : "Filely · Gmail in Chrome").font(.system(size: 10)).foregroundStyle(.secondary)
                 }
                 Spacer()
                 SmallIconButton(symbol: "xmark", help: "Dismiss suggestions", action: model.dismissSuggestions)
@@ -45,7 +45,7 @@ struct SuggestionsView: View {
                         Spacer()
                         Image(systemName: "return").font(.system(size: 11)).opacity(0.6)
                     }.font(.system(size: 12, weight: .semibold)).frame(maxWidth: .infinity).padding(.vertical, 7)
-                }.buttonStyle(.glassProminent).tint(FilerStyle.accent).disabled(model.isSelecting)
+                }.buttonStyle(.glassProminent).tint(FilelyStyle.accent).disabled(model.isSelecting)
                     .keyboardShortcut(.defaultAction)
                     .padding(.bottom, 12)
             }
@@ -54,11 +54,11 @@ struct SuggestionsView: View {
                 Text(model.isDemo ? "Demo · sample files only" : "Matched privately on your Mac").font(.system(size: 10))
                 Spacer()
                 Button { model.showMainWindow?() } label: { Image(systemName: "gearshape").font(.system(size: 11)) }
-                    .buttonStyle(.plain).help("Open Filer")
+                    .buttonStyle(.plain).help("Open Filely")
             }.foregroundStyle(.secondary)
         }
         .padding(20).frame(width: 348, height: 508)
-        .tint(FilerStyle.accent)
+        .tint(FilelyStyle.accent)
         .focusable().focusEffectDisabled().focused($keyboardFocus)
         .onAppear { keyboardFocus = true }
         .onKeyPress(.downArrow) { model.moveSelection(1); return .handled }
@@ -85,10 +85,10 @@ struct SuggestionsView: View {
             } else if model.context == nil {
                 emptyState("A little more context", detail: "Open one Gmail compose draft before clicking Attach. If Chrome hasn’t shared its text yet, close the picker and try again.", symbol: "text.bubble")
             } else if model.files.isEmpty && !model.isDemo {
-                emptyState("Add your files first", detail: "Choose a folder for Filer to search, then try this attachment again.", symbol: "folder.badge.plus")
+                emptyState("Add your files first", detail: "Choose a folder for Filely to search, then try this attachment again.", symbol: "folder.badge.plus")
                 Button("Choose a folder…") { model.showMainWindow?(); model.chooseFolder() }.buttonStyle(.glass).frame(maxWidth: .infinity)
             } else if model.suggestions.isEmpty {
-                emptyState("No close match yet", detail: "You can keep browsing in the file picker. Filer won’t guess when it can’t find a good fit.", symbol: "doc.text.magnifyingglass")
+                emptyState("No close match yet", detail: "You can keep browsing in the file picker. Filely won’t guess when it can’t find a good fit.", symbol: "doc.text.magnifyingglass")
             } else {
                 HStack {
                     Text("SUGGESTED FOR YOU").font(.system(size: 9, weight: .semibold)).tracking(1).foregroundStyle(.secondary)
@@ -126,15 +126,15 @@ struct SuggestionsView: View {
             }.frame(maxWidth: .infinity, alignment: .leading)
             VStack(spacing: 9) {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(isSelected ? FilerStyle.accent : Color.secondary.opacity(0.25)).font(.system(size: 14))
+                    .foregroundStyle(isSelected ? FilelyStyle.accent : Color.secondary.opacity(0.25)).font(.system(size: 14))
                 Button { model.previewFile?(suggestion.file.url) } label: {
                     Image(systemName: "eye").font(.system(size: 11)).foregroundStyle(.secondary)
                 }.buttonStyle(.plain).help("Preview \(suggestion.file.name)").accessibilityLabel("Preview \(suggestion.file.name)")
             }
         }
         .padding(.horizontal, 11).padding(.vertical, 10)
-        .background(isSelected ? FilerStyle.accent.opacity(0.10) : Color.primary.opacity(0.025), in: RoundedRectangle(cornerRadius: 13))
-        .overlay(RoundedRectangle(cornerRadius: 13).strokeBorder(isSelected ? FilerStyle.accent.opacity(0.24) : .clear, lineWidth: 1))
+        .background(isSelected ? FilelyStyle.accent.opacity(0.10) : Color.primary.opacity(0.025), in: RoundedRectangle(cornerRadius: 13))
+        .overlay(RoundedRectangle(cornerRadius: 13).strokeBorder(isSelected ? FilelyStyle.accent.opacity(0.24) : .clear, lineWidth: 1))
         .contentShape(RoundedRectangle(cornerRadius: 13))
         .onTapGesture { model.selectedSuggestion = suggestion.id; model.demoSelectionName = nil; keyboardFocus = true }
         .accessibilityElement(children: .contain)

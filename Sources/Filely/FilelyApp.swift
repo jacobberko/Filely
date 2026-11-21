@@ -3,10 +3,10 @@ import SwiftUI
 import QuickLookUI
 
 @main
-struct FilerApp {
+struct FilelyApp {
     @MainActor static func main() {
         let app = NSApplication.shared
-        let delegate = FilerAppDelegate()
+        let delegate = FilelyAppDelegate()
         app.delegate = delegate
         app.setActivationPolicy(.accessory)
         withExtendedLifetime(delegate) { app.run() }
@@ -14,10 +14,10 @@ struct FilerApp {
 }
 
 @MainActor
-final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, @preconcurrency QLPreviewPanelDataSource {
+final class FilelyAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, @preconcurrency QLPreviewPanelDataSource {
     private var model: AppModel!
     private var mainWindow: NSWindow!
-    private var suggestionPanel: FilerPanel!
+    private var suggestionPanel: FilelyPanel!
     private var demoWindow: NSWindow?
     private var statusItem: NSStatusItem!
     private let popover = NSPopover()
@@ -59,17 +59,17 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
     private func installMenu() {
         let menu = NSMenu()
         let appItem = NSMenuItem()
-        let appMenu = NSMenu(title: "Filer")
-        appMenu.addItem(withTitle: "About Filer", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+        let appMenu = NSMenu(title: "Filely")
+        appMenu.addItem(withTitle: "About Filely", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
         appMenu.addItem(.separator())
         let settings = appMenu.addItem(withTitle: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         settings.target = self
-        let overview = appMenu.addItem(withTitle: "Open Filer", action: #selector(openOverview), keyEquivalent: "0")
+        let overview = appMenu.addItem(withTitle: "Open Filely", action: #selector(openOverview), keyEquivalent: "0")
         overview.target = self
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Hide Filer", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
+        appMenu.addItem(withTitle: "Hide Filely", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Quit Filer", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit Filely", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
         menu.addItem(appItem)
         let editItem = NSMenuItem()
@@ -83,7 +83,7 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
 
     private func createMainWindow() {
         mainWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 860, height: 640), styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView], backing: .buffered, defer: false)
-        mainWindow.title = "Filer"
+        mainWindow.title = "Filely"
         mainWindow.titleVisibility = .hidden
         mainWindow.titlebarAppearsTransparent = true
         mainWindow.titlebarSeparatorStyle = .none
@@ -96,7 +96,7 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
     }
 
     private func createSuggestionPanel() {
-        suggestionPanel = FilerPanel(contentRect: NSRect(x: 0, y: 0, width: 348, height: 508), styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
+        suggestionPanel = FilelyPanel(contentRect: NSRect(x: 0, y: 0, width: 348, height: 508), styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
         suggestionPanel.isFloatingPanel = true
         suggestionPanel.level = .floating
         suggestionPanel.hidesOnDeactivate = false
@@ -106,7 +106,7 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
         suggestionPanel.hasShadow = true
         suggestionPanel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         suggestionPanel.animationBehavior = .utilityWindow
-        suggestionPanel.title = "Filer Suggestions"
+        suggestionPanel.title = "Filely Suggestions"
         let glass = NSGlassEffectView(frame: NSRect(x: 0, y: 0, width: 348, height: 508))
         glass.style = .regular
         glass.cornerRadius = 23
@@ -121,9 +121,9 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
     private func createStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "paperclip", accessibilityDescription: "Filer")
+            button.image = NSImage(systemSymbolName: "paperclip", accessibilityDescription: "Filely")
             button.image?.isTemplate = true
-            button.toolTip = "Filer — your next attachment, right here"
+            button.toolTip = "Filely — your next attachment, right here"
             button.target = self
             button.action = #selector(togglePopover)
         }
@@ -180,7 +180,7 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
             let controller = DemoController(model: model)
             demoController = controller
             demoWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 540, height: 510), styleMask: [.titled, .closable, .fullSizeContentView], backing: .buffered, defer: false)
-            demoWindow?.title = "Filer — Sample email"
+            demoWindow?.title = "Filely — Sample email"
             demoWindow?.titlebarAppearsTransparent = true
             demoWindow?.titleVisibility = .hidden
             demoWindow?.isReleasedWhenClosed = false
@@ -207,7 +207,7 @@ final class FilerAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate,
     func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> (any QLPreviewItem)! { previewURL as NSURL? }
 }
 
-final class FilerPanel: NSPanel {
+final class FilelyPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 }

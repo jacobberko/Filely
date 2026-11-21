@@ -72,7 +72,7 @@ private final class FolderChangeWorker: @unchecked Sendable {
         init(owner: FolderChangeWorker) { self.owner = owner }
     }
 
-    private let queue = DispatchQueue(label: "app.filer.folder-changes", qos: .utility)
+    private let queue = DispatchQueue(label: "app.filely.folder-changes", qos: .utility)
     private let queueKey = DispatchSpecificKey<Bool>()
     private let debounceInterval: TimeInterval
     private let onChange: @Sendable (FolderChangeBatch) -> Void

@@ -1,17 +1,17 @@
 import SwiftUI
 import AppKit
 
-enum FilerStyle {
+enum FilelyStyle {
     static let accent = Color(red: 0.08, green: 0.47, blue: 0.59)
     static let separator = Color.primary.opacity(0.07)
 }
 
-struct FilerMark: View {
+struct FilelyMark: View {
     var size: CGFloat = 44
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: size * 0.25, style: .continuous)
-                .fill(LinearGradient(colors: [Color(red: 0.26, green: 0.70, blue: 0.79), FilerStyle.accent], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .fill(LinearGradient(colors: [Color(red: 0.26, green: 0.70, blue: 0.79), FilelyStyle.accent], startPoint: .topLeading, endPoint: .bottomTrailing))
             RoundedRectangle(cornerRadius: size * 0.25, style: .continuous)
                 .strokeBorder(.white.opacity(0.28), lineWidth: 1)
             Image(systemName: "paperclip")
@@ -20,7 +20,7 @@ struct FilerMark: View {
                 .rotationEffect(.degrees(-8))
         }
         .frame(width: size, height: size)
-        .shadow(color: FilerStyle.accent.opacity(0.15), radius: size * 0.16, y: size * 0.07)
+        .shadow(color: FilelyStyle.accent.opacity(0.15), radius: size * 0.16, y: size * 0.07)
         .accessibilityHidden(true)
     }
 }
@@ -46,7 +46,7 @@ struct Surface<Content: View>: View {
         content.padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(nsColor: .controlBackgroundColor).opacity(0.72), in: RoundedRectangle(cornerRadius: 18))
-            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(FilerStyle.separator, lineWidth: 1))
+            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(FilelyStyle.separator, lineWidth: 1))
     }
 }
 

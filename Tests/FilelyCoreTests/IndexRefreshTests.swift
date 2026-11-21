@@ -1,12 +1,12 @@
 import Foundation
 import XCTest
-@testable import FilerCore
+@testable import FilelyCore
 
 final class IndexRefreshTests: XCTestCase {
     private let manager = FileManager.default
 
     private func makeFolder() throws -> URL {
-        let root = manager.temporaryDirectory.appendingPathComponent("FilerRefreshTests-\(UUID().uuidString)", isDirectory: true)
+        let root = manager.temporaryDirectory.appendingPathComponent("FilelyRefreshTests-\(UUID().uuidString)", isDirectory: true)
         try manager.createDirectory(at: root, withIntermediateDirectories: true)
         return root
     }

@@ -23,7 +23,7 @@ func makeIcon(pixels: Int) throws -> Data {
                                          bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
                                          colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0),
           let graphics = NSGraphicsContext(bitmapImageRep: bitmap) else {
-        throw NSError(domain: "FilerIcon", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create the icon canvas."])
+        throw NSError(domain: "FilelyIcon", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create the icon canvas."])
     }
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = graphics
@@ -70,9 +70,9 @@ func makeIcon(pixels: Int) throws -> Data {
 
     let symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 530, weight: .medium)
         .applying(NSImage.SymbolConfiguration(paletteColors: [.white]))
-    guard let symbol = NSImage(systemSymbolName: "paperclip", accessibilityDescription: "Filer")?
+    guard let symbol = NSImage(systemSymbolName: "paperclip", accessibilityDescription: "Filely")?
         .withSymbolConfiguration(symbolConfiguration) else {
-        throw NSError(domain: "FilerIcon", code: 2, userInfo: [NSLocalizedDescriptionKey: "The paperclip system symbol is unavailable."])
+        throw NSError(domain: "FilelyIcon", code: 2, userInfo: [NSLocalizedDescriptionKey: "The paperclip system symbol is unavailable."])
     }
     let available = NSRect(x: 255, y: 245, width: 514, height: 540)
     let ratio = min(available.width / symbol.size.width, available.height / symbol.size.height)
@@ -89,7 +89,7 @@ func makeIcon(pixels: Int) throws -> Data {
     NSGraphicsContext.restoreGraphicsState()
 
     guard let png = bitmap.representation(using: .png, properties: [:]) else {
-        throw NSError(domain: "FilerIcon", code: 3, userInfo: [NSLocalizedDescriptionKey: "Cannot encode the icon PNG."])
+        throw NSError(domain: "FilelyIcon", code: 3, userInfo: [NSLocalizedDescriptionKey: "Cannot encode the icon PNG."])
     }
     return png
 }
@@ -125,6 +125,6 @@ icon.append(body)
 try icon.write(to: iconDestination, options: .atomic)
 guard let loaded = NSImage(contentsOf: iconDestination), loaded.isValid,
       loaded.representations.contains(where: { $0.pixelsWide == 1024 && $0.pixelsHigh == 1024 }) else {
-    throw NSError(domain: "FilerIcon", code: 4, userInfo: [NSLocalizedDescriptionKey: "The generated ICNS could not be loaded by macOS."])
+    throw NSError(domain: "FilelyIcon", code: 4, userInfo: [NSLocalizedDescriptionKey: "The generated ICNS could not be loaded by macOS."])
 }
 print("Created and verified \(iconDestination.path)")

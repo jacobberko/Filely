@@ -1,5 +1,5 @@
 import XCTest
-@testable import FilerCore
+@testable import FilelyCore
 
 final class IndexRefreshQueueTests: XCTestCase {
     func testChangesDuringScanSurviveAsOneFollowUp() {

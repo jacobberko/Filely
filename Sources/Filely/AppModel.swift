@@ -1,6 +1,6 @@
 import AppKit
 import Combine
-import FilerCore
+import FilelyCore
 
 struct FolderSource: Identifiable {
     var id: String { url.path }
@@ -137,8 +137,8 @@ final class AppModel: ObservableObject {
 
     func chooseFolder() {
         let chooser = NSOpenPanel()
-        chooser.title = "Choose a folder for Filer"
-        chooser.message = "Filer searches only folders you add. Your files stay on this Mac."
+        chooser.title = "Choose a folder for Filely"
+        chooser.message = "Filely searches only folders you add. Your files stay on this Mac."
         chooser.prompt = "Add Folder"
         chooser.canChooseFiles = false
         chooser.canChooseDirectories = true
@@ -251,7 +251,7 @@ final class AppModel: ObservableObject {
         if isDemo {
             selectedSuggestion = suggestion.id
             demoSelectionName = suggestion.file.name
-            NotificationCenter.default.post(name: .filerDemoSelected, object: suggestion.file.url)
+            NotificationCenter.default.post(name: .filelyDemoSelected, object: suggestion.file.url)
             return
         }
         guard let picker else { return }
@@ -334,5 +334,5 @@ final class AppModel: ObservableObject {
 }
 
 extension Notification.Name {
-    static let filerDemoSelected = Notification.Name("filer.demo.selected")
+    static let filelyDemoSelected = Notification.Name("filely.demo.selected")
 }

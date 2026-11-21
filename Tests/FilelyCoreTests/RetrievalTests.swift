@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import FilerCore
+@testable import FilelyCore
 
 final class RetrievalTests: XCTestCase {
     private let now = Date(timeIntervalSince1970: 1_800_000_000)
@@ -124,8 +124,8 @@ final class RetrievalTests: XCTestCase {
 
     func testSelectedFolderIndexExtractsPDFTextAndSkipsHiddenSecretsAndSymlinks() async throws {
         let manager = FileManager.default
-        let root = manager.temporaryDirectory.appendingPathComponent("FilerCoreTests-\(UUID().uuidString)", isDirectory: true)
-        let outside = manager.temporaryDirectory.appendingPathComponent("FilerOutside-\(UUID().uuidString).txt")
+        let root = manager.temporaryDirectory.appendingPathComponent("FilelyCoreTests-\(UUID().uuidString)", isDirectory: true)
+        let outside = manager.temporaryDirectory.appendingPathComponent("FilelyOutside-\(UUID().uuidString).txt")
         try manager.createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? manager.removeItem(at: root); try? manager.removeItem(at: outside) }
         try "Robotics assignment odometry notes".write(to: root.appendingPathComponent("notes.md"), atomically: true, encoding: .utf8)
@@ -148,7 +148,7 @@ final class RetrievalTests: XCTestCase {
 
     func testIndexLimitIsReportedInsteadOfClaimingFullCoverage() async throws {
         let manager = FileManager.default
-        let root = manager.temporaryDirectory.appendingPathComponent("FilerLimitTests-\(UUID().uuidString)", isDirectory: true)
+        let root = manager.temporaryDirectory.appendingPathComponent("FilelyLimitTests-\(UUID().uuidString)", isDirectory: true)
         try manager.createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? manager.removeItem(at: root) }
         for number in 0..<4 {
@@ -161,7 +161,7 @@ final class RetrievalTests: XCTestCase {
 
     func testRootPDFIsNotCrowdedOutByNewerFilesInNestedProject() async throws {
         let manager = FileManager.default
-        let root = manager.temporaryDirectory.appendingPathComponent("FilerBreadthTests-\(UUID().uuidString)", isDirectory: true)
+        let root = manager.temporaryDirectory.appendingPathComponent("FilelyBreadthTests-\(UUID().uuidString)", isDirectory: true)
         let project = root.appendingPathComponent("DownloadedProject", isDirectory: true)
         try manager.createDirectory(at: project, withIntermediateDirectories: true)
         defer { try? manager.removeItem(at: root) }
