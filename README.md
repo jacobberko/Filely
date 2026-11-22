@@ -1,6 +1,8 @@
 # Filely
 
-Filely is a native macOS app that suggests local files when you open Gmail’s attachment picker in Chrome. It uses the active compose draft to search folders you select and lets you preview a suggestion before attaching it.
+Filely is an open-source macOS app that predicts which local file you’ll need next from the task at hand. The goal is to make contextual file suggestions work across any website or macOS app, with indexing and ranking on your Mac.
+
+**Current prototype.** Filely uses the active Gmail draft in Chrome to suggest files from folders you choose. You can preview a suggestion before attaching it.
 
 ## Try it
 
@@ -19,6 +21,12 @@ The built-in demo uses fictional files and works without Accessibility access. F
 - Ranking runs locally. The document index and captured draft text stay in memory. Folder bookmarks and preferences are stored on your Mac.
 - Live suggestions currently support recognized Gmail compose windows in Chrome with an English-language file picker. Filely attaches a file only after you select it and never sends mail.
 - This is a prototype built from source. The build script signs the app locally for development.
+
+## Machine learning research
+
+A separate research prototype compares the app’s ranking baseline with keyword search, semantic embeddings, and reranking. We measure how often the intended file appears near the top and study cases where the request is ambiguous or the right file is missing. The goal is a reproducible benchmark that other developers can run with synthetic files.
+
+FilelyCore is the reusable Swift library behind the app. Other macOS projects can use it to index local documents and rank them against a query.
 
 ## Develop
 
